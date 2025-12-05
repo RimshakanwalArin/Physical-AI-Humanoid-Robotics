@@ -1,0 +1,286 @@
+openapi: 3.0.0
+
+info:
+  title: Physical AI Textbook RAG Chatbot API
+  description: Retrieval-Augmented Generation API for textbook Q&A with source citations
+  version: 1.0.0
+  contact:
+    name: Physical AI Textbook Project
+
+servers:
+  - url: https://api.textbook.local/v1
+    description: Production (Vercel or similar)
+  - url: http://localhost:8000/v1
+    description: Local development
+
+tags:
+  - name: Chat
+    description: RAG chatbot endpoints
+  - name: Health
+    description: Service health and status
+
+paths:
+  /api/chat:
+    post:
+      summary: Submit a question to the RAG chatbot
+      description: |
+        Submit a user question and receive an answer sourced strictly from textbook content.
+        If the question is out-of-scope (not covered in the textbook), responds with "Not found in textbook".
+        Includes source citations for all answers.
+      operationId: askQuestion
+      tags:
+        - Chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+            examples:
+              inScope:
+                summary: Question about textbook content
+                value:
+                  query: "What is embodied intelligence?"
+                  session_id: "550e8400-e29b-41d4-a716-446655440000"
+              outOfScope:
+                summary: Question not covered in textbook
+                value:
+                  query: "How do I bake a cake?"
+                  session_id: "550e8400-e29b-41d4-a716-446655440000"
+      responses:
+        '200':
+          description: Successfully processed query and generated answer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+              examples:
+                success:
+                  summary: Answer found with citations
+                  value:
+                    status: "success"
+                    answer: "Embodied intelligence refers to the idea that intelligence emerges from the interaction of an agent with its environment through physical embodiment..."
+                    sources:
+                      - chapter_id: "ch-001"
+                        chapter_title: "Introduction to Physical AI"
+                        section_id: "sec-001"
+                        section_title: "Embodied Intelligence"
+                        excerpt: "Embodied intelligence refers to the idea that intelligence emerges from the interaction of an agent with its environment through physical embodiment..."
+                      - chapter_id: "ch-001"
+                        chapter_title: "Introduction to Physical AI"
+                        section_id: "sec-002"
+                        section_title: "Real-World AI"
+                        excerpt: "Physical agents must perceive and act in real-world environments..."
+                    latency_ms: 245
+                notFound:
+                  summary: Answer not found in textbook
+                  value:
+                    status: "not_found"
+                    answer: "This topic is not covered in the Physical AI & Humanoid Robotics textbook. Please try a question related to the course content."
+                    sources: []
+                    latency_ms: 180
+        '400':
+          description: Invalid request (malformed JSON, missing required fields)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Bad Request"
+                message: "Missing required field: query"
+                status: 400
+        '503':
+          description: Service unavailable (Qdrant down, embeddings service down)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Service Unavailable"
+                message: "Chat service is temporarily unavailable. Please try again in a moment."
+                status: 503
+
+  /api/health:
+    get:
+      summary: Health check endpoint
+      description: Verify service is running and dependencies (Qdrant, embeddings) are available
+      operationId: healthCheck
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "healthy"
+                timestamp: "2025-12-06T10:30:45Z"
+                components:
+                  embeddings: "ok"
+                  qdrant: "ok"
+                  database: "ok"
+        '503':
+          description: Service or dependency is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "unhealthy"
+                timestamp: "2025-12-06T10:30:45Z"
+                components:
+                  embeddings: "ok"
+                  qdrant: "error"
+                  database: "ok"
+
+components:
+  schemas:
+    ChatRequest:
+      type: object
+      required:
+        - query
+        - session_id
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: User question or selected text from chapter
+          example: "Explain bipedal locomotion"
+        session_id:
+          type: string
+          format: uuid
+          description: Anonymous session identifier (no user tracking)
+          example: "550e8400-e29b-41d4-a716-446655440000"
+
+    ChatResponse:
+      type: object
+      required:
+        - status
+        - answer
+        - sources
+        - latency_ms
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+            - not_found
+            - error
+          description: Status of the query processing
+        answer:
+          type: string
+          description: Generated answer or status message
+          example: "Bipedal locomotion refers to movement on two legs..."
+        sources:
+          type: array
+          description: Source citations (empty if not_found or error)
+          items:
+            $ref: '#/components/schemas/Citation'
+        latency_ms:
+          type: integer
+          minimum: 0
+          maximum: 5000
+          description: API response time in milliseconds (target <1000)
+          example: 245
+
+    Citation:
+      type: object
+      required:
+        - chapter_id
+        - chapter_title
+        - section_id
+        - section_title
+        - excerpt
+      properties:
+        chapter_id:
+          type: string
+          description: Chapter identifier
+          example: "ch-002"
+        chapter_title:
+          type: string
+          description: Chapter name
+          example: "Basics of Humanoid Robotics"
+        section_id:
+          type: string
+          description: Section identifier
+          example: "sec-005"
+        section_title:
+          type: string
+          description: Section heading
+          example: "Bipedal Locomotion and Kinematics"
+        excerpt:
+          type: string
+          description: Relevant text snippet from section (first 200 chars)
+          example: "Bipedal locomotion refers to movement on two legs, fundamental to humanoid robot design..."
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+        - components
+      properties:
+        status:
+          type: string
+          enum:
+            - healthy
+            - unhealthy
+          description: Overall service status
+        timestamp:
+          type: string
+          format: date-time
+          description: Health check timestamp
+        components:
+          type: object
+          required:
+            - embeddings
+            - qdrant
+            - database
+          properties:
+            embeddings:
+              type: string
+              enum:
+                - ok
+                - error
+              description: Sentence Transformers availability
+            qdrant:
+              type: string
+              enum:
+                - ok
+                - error
+              description: Qdrant vector database availability
+            database:
+              type: string
+              enum:
+                - ok
+                - error
+              description: Neon PostgreSQL availability (optional)
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+        - status
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "Bad Request"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Missing required field: query"
+        status:
+          type: integer
+          description: HTTP status code
+          example: 400
+
+  securitySchemes: {}
+    # No authentication required; textbook is public
+
+security: []
+  # No security scheme required
