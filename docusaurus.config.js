@@ -49,23 +49,87 @@ const config = {
 
   themeConfig: {
     image: 'img/docusaurus-social-card.jpg',
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
     navbar: {
       title: 'Physical AI Textbook',
+      logo: {
+        alt: 'Physical AI Logo',
+        src: 'img/logo.svg',
+      },
       items: [
         {
           type: 'localeDropdown',
           position: 'right',
         },
+        {
+          href: 'https://github.com/your-username/mybook',
+          label: 'GitHub',
+          position: 'right',
+        },
       ],
+      style: 'dark',
+      hideOnScroll: true,
     },
     footer: {
       style: 'dark',
-      copyright: `Copyright © 2025 Physical AI Course. Built with Docusaurus.`,
+      links: [
+        {
+          title: 'Courses',
+          items: [
+            {
+              label: 'Physical AI Fundamentals',
+              to: '/intro-physical-ai',
+            },
+            {
+              label: 'Humanoid Robotics',
+              to: '/humanoid-robotics',
+            },
+            {
+              label: 'ROS 2 Programming',
+              to: '/ros2-fundamentals',
+            },
+          ],
+        },
+        {
+          title: 'Resources',
+          items: [
+            {
+              label: 'GitHub',
+              href: 'https://github.com/your-username/mybook',
+            },
+            {
+              label: 'Documentation',
+              to: '/docs',
+            },
+          ],
+        },
+        {
+          title: 'More',
+          items: [
+            {
+              label: 'About',
+              href: 'https://github.com/your-username',
+            },
+          ],
+        },
+      ],
+      copyright: `Copyright © 2024-2025 Physical AI Course. Built with ❤️ using Docusaurus.`,
     },
     prism: {
       theme: themes.github,
       darkTheme: themes.dracula,
-      additionalLanguages: ['python', 'bash', 'javascript', 'typescript', 'yaml'],
+      additionalLanguages: ['python', 'bash', 'javascript', 'typescript', 'yaml', 'xml', 'sql'],
+      magicComments: [
+        {
+          className: 'theme-code-block-highlighted-line',
+          line: 'highlight-next-line',
+          block: {begin: 'highlight-start', end: 'highlight-end'},
+        },
+      ],
     },
   },
 };
