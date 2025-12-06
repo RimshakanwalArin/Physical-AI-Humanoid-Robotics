@@ -8,13 +8,18 @@ const config = {
   favicon: 'img/favicon.ico',
 
   url: 'https://your-username.github.io',
-  baseUrl: '/mybook/',
+  baseUrl: '/',
   organizationName: 'your-username',
   projectName: 'mybook',
   deploymentBranch: 'gh-pages',
 
   onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   i18n: {
     defaultLocale: 'en',
@@ -64,9 +69,9 @@ const config = {
           position: 'left',
           items: [
             { label: 'Introduction', to: '/intro' },
-            { label: 'Physical AI', to: '/physical-ai' },
+            { label: 'Physical AI', to: '/intro-physical-ai' },
             { label: 'Humanoid Robotics', to: '/humanoid-robotics' },
-            { label: 'ROS2 Basics', to: '/ros2-basics' },
+            { label: 'ROS2 Fundamentals', to: '/ros2-fundamentals' },
           ],
         },
         {
