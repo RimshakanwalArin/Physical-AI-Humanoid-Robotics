@@ -1,3 +1,4 @@
+import React from 'react';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
@@ -35,7 +36,7 @@ const FeatureList = [
   },
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({ title, Svg, description }) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
@@ -62,3 +63,8 @@ export default function HomepageFeatures() {
     </section>
   );
 }
+
+
+
+
+
