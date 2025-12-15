@@ -4,9 +4,7 @@
     "description": "Title in Urdu"
   },
   "logo": {
-    "alt": {
-      "message": "لوگو",
-      "description": "Logo alt text in Urdu"
-    }
+    "message": "لوگو",
+    "description": "Logo alt text in Urdu"
   }
 }
