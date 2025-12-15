@@ -2,6 +2,7 @@
 const { themes } = require('prism-react-renderer');
 
 // Get backend URL from environment (Vercel) or use defaults
+// Fallback to localhost for development, you can update this after deployment
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
 /** @type {import('@docusaurus/types').Config} */
