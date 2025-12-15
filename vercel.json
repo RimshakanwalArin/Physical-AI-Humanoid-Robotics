@@ -2,10 +2,24 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "build",
-  "rewrites": [
+  "installCommand": "npm install",
+  "env": {
+    "REACT_APP_BACKEND_URL": "@react_app_backend_url"
+  },
+  "build": {
+    "env": {
+      "REACT_APP_BACKEND_URL": "@react_app_backend_url"
+    }
+  },
+  "headers": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, s-maxage=3600"
+        }
+      ]
     }
   ]
 }

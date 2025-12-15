@@ -1,16 +1,19 @@
 // @ts-check
 const { themes } = require('prism-react-renderer');
 
+// Get backend URL from environment (Vercel) or use defaults
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Physical AI & Humanoid Robotics – Essentials',
   tagline: 'Professional AI-native textbook with integrated RAG chatbot',
   favicon: 'img/favicon.ico',
 
-  url: 'https://your-username.github.io',
+  url: 'https://mybook-kwpnepr8t-rimshakanwalarins-projects.vercel.app',
   baseUrl: '/',
-  organizationName: 'RimshakanwalArain',
-  projectName: '/',
+  organizationName: 'RimshakanwalArin',
+  projectName: 'Physical-AI-Humanoid-Robotics',
   deploymentBranch: 'gh-pages',
 
   onBrokenLinks: 'warn',
@@ -39,7 +42,7 @@ const config = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/your-username/mybook/tree/main/',
+          editUrl: 'https://github.com/RimshakanwalArin/Physical-AI-Humanoid-Robotics/tree/main/',
           routeBasePath: '/',
         },
         blog: false,
@@ -82,7 +85,7 @@ const config = {
           position: 'right',
         },
         {
-          href: 'https://github.com/your-username/mybook',
+          href: 'https://github.com/RimshakanwalArin/Physical-AI-Humanoid-Robotics',
           label: 'GitHub',
           position: 'right',
         },
@@ -104,14 +107,14 @@ const config = {
         {
           title: 'Resources',
           items: [
-            { label: 'GitHub', href: 'https://github.com/your-username/mybook' },
+            { label: 'GitHub', href: 'https://github.com/RimshakanwalArin/Physical-AI-Humanoid-Robotics' },
             { label: 'Documentation', to: '/' },
           ],
         },
         {
           title: 'More',
           items: [
-            { label: 'About', href: 'https://github.com/your-username' },
+            { label: 'About', href: 'https://github.com/RimshakanwalArin' },
           ],
         },
       ],
