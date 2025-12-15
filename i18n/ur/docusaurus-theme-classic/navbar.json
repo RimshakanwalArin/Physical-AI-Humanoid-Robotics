@@ -1,4 +1,12 @@
 {
-  "title": "فزیکل AI",
-  "logo.alt": "لوگو"
+  "title": {
+    "message": "فزیکل AI",
+    "description": "Title in Urdu"
+  },
+  "logo": {
+    "alt": {
+      "message": "لوگو",
+      "description": "Logo alt text in Urdu"
+    }
+  }
 }
