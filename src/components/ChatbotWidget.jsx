@@ -2,9 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './ChatbotWidget.module.css';
 
 export default function ChatbotWidget() {
-  // Configuration
-  const API_BASE_URL = 'http://localhost:8000';
-  const CHAT_API_ENDPOINT = `${API_BASE_URL}/api/rag/query`;
+  // Configuration - Use relative path for Vercel deployment
+  const CHAT_API_ENDPOINT = '/api/rag/query';
 
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
