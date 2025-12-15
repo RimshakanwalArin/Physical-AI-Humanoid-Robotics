@@ -1,1 +1,1 @@
-# Backend tests
+"""Test suite for RAG chatbot backend"""

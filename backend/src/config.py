@@ -1,29 +1,52 @@
-import os
-from dotenv import load_dotenv
+"""Configuration management for RAG chatbot backend (T002)"""
 
-load_dotenv()
+from pydantic_settings import BaseSettings
+from typing import Literal
 
-# Qdrant Configuration
-QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
-QDRANT_API_KEY = os.getenv("QDRANT_API_KEY", None)
 
-# Neon PostgreSQL Configuration
-DATABASE_URL = os.getenv("DATABASE_URL", None)
-NEON_DATABASE_URL = os.getenv("NEON_DATABASE_URL", None)
+class Settings(BaseSettings):
+    """Application settings with support for embedding model switching"""
 
-# Server Configuration
-API_HOST = os.getenv("API_HOST", "0.0.0.0")
-API_PORT = int(os.getenv("API_PORT", "8000"))
+    # Environment
+    environment: str = "development"
+    debug: bool = True
 
-# Logging
-LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+    # Embedding Model Configuration (T002)
+    embedding_model: Literal[
+        "all-MiniLM-L6-v2",
+        "bge-small-en-v1.5",
+        "e5-small-v2"
+    ] = "bge-small-en-v1.5"
 
-# CORS
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,https://localhost:3000").split(",")
+    embedding_dimension: int = 384
+    embedding_cache_size: int = 1000
 
-# Authentication
-SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production-1234567890")
+    # Retrieval Configuration
+    top_k_retrieval: int = 5
+    min_relevance_threshold: float = 0.70
 
-# Gemini LLM Configuration
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", None)
-USE_GEMINI = os.getenv("USE_GEMINI", "true").lower() == "true"
+    # Qdrant Configuration
+    qdrant_url: str = "http://localhost:6333"
+    qdrant_api_key: str | None = None
+    qdrant_collection_name: str = "documents"
+
+    # Neon PostgreSQL Configuration
+    neon_db_url: str | None = None
+
+    # Quality Monitoring (T002)
+    log_quality_metrics: bool = True
+    hallucination_detection_enabled: bool = True
+
+    # Performance
+    max_query_length: int = 1000
+    min_query_length: int = 10
+    query_timeout_seconds: int = 30
+
+    class Config:
+        env_file = ".env"
+        case_sensitive = False
+
+
+def get_settings() -> Settings:
+    """Get application settings singleton"""
+    return Settings()

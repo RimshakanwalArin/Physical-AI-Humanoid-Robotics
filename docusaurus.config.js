@@ -9,8 +9,8 @@ const config = {
 
   url: 'https://your-username.github.io',
   baseUrl: '/',
-  organizationName: 'your-username',
-  projectName: 'mybook',
+  organizationName: 'RimshakanwalArain',
+  projectName: '/',
   deploymentBranch: 'gh-pages',
 
   onBrokenLinks: 'warn',
@@ -20,6 +20,9 @@ const config = {
       onBrokenMarkdownLinks: 'warn',
     },
   },
+
+  // Ensure ChatbotWidget Root component is used
+  // ssrTemplate: '<html><head>{{htmlAttributes}}</head><body>{{bodyAttributes}}{{{html}}}</body></html>',
 
   i18n: {
     defaultLocale: 'en',

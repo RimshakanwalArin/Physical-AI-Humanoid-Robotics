@@ -1,0 +1,194 @@
+{
+  "test_queries": {
+    "in_scope": [
+      {
+        "id": "query_1",
+        "text": "What is embodied intelligence?",
+        "expected_chapter": "ch1",
+        "expected_section": "1.2"
+      },
+      {
+        "id": "query_2",
+        "text": "How does bipedal locomotion work?",
+        "expected_chapter": "ch2",
+        "expected_section": "2.1"
+      },
+      {
+        "id": "query_3",
+        "text": "Explain ROS 2 fundamentals",
+        "expected_chapter": "ch3",
+        "expected_section": "3.1"
+      },
+      {
+        "id": "query_4",
+        "text": "What are digital twins?",
+        "expected_chapter": "ch4",
+        "expected_section": "4.1"
+      },
+      {
+        "id": "query_5",
+        "text": "How does vision-language-action work?",
+        "expected_chapter": "ch5",
+        "expected_section": "5.1"
+      },
+      {
+        "id": "query_6",
+        "text": "What is the capstone project?",
+        "expected_chapter": "ch6",
+        "expected_section": "6.1"
+      },
+      {
+        "id": "query_7",
+        "text": "How do robots walk?",
+        "expected_chapter": "ch2",
+        "expected_section": "2.1",
+        "note": "Synonym for bipedal locomotion"
+      },
+      {
+        "id": "query_8",
+        "text": "Explain ROS components",
+        "expected_chapter": "ch3",
+        "expected_section": "3.2"
+      },
+      {
+        "id": "query_9",
+        "text": "What is simulation?",
+        "expected_chapter": "ch4",
+        "expected_section": "4.1"
+      },
+      {
+        "id": "query_10",
+        "text": "Tell me about humanoid robots",
+        "expected_chapter": "ch2",
+        "expected_section": "2.1"
+      }
+    ],
+    "out_of_scope": [
+      {
+        "id": "query_oos_1",
+        "text": "What is machine learning?",
+        "should_reject": true
+      },
+      {
+        "id": "query_oos_2",
+        "text": "How do neural networks work?",
+        "should_reject": true
+      },
+      {
+        "id": "query_oos_3",
+        "text": "What is deep learning?",
+        "should_reject": true
+      },
+      {
+        "id": "query_oos_4",
+        "text": "Explain quantum computing",
+        "should_reject": true
+      },
+      {
+        "id": "query_oos_5",
+        "text": "What is cryptocurrency?",
+        "should_reject": true
+      },
+      {
+        "id": "query_oos_6",
+        "text": "How do airplanes fly?",
+        "should_reject": true
+      },
+      {
+        "id": "query_oos_7",
+        "text": "What is the capital of France?",
+        "should_reject": true
+      },
+      {
+        "id": "query_oos_8",
+        "text": "How to cook pasta?",
+        "should_reject": true
+      },
+      {
+        "id": "query_oos_9",
+        "text": "Tell me about history",
+        "should_reject": true
+      },
+      {
+        "id": "query_oos_10",
+        "text": "What is photography?",
+        "should_reject": true
+      }
+    ]
+  },
+  "sample_chunks": [
+    {
+      "id": "chunk_1",
+      "chapter_id": "ch1",
+      "section_name": "Introduction",
+      "section_number": "1.1",
+      "content": "This chapter introduces the concept of physical AI and embodied intelligence.",
+      "page_number": 1
+    },
+    {
+      "id": "chunk_2",
+      "chapter_id": "ch1",
+      "section_name": "Embodied Intelligence",
+      "section_number": "1.2",
+      "content": "Embodied intelligence refers to intelligence that emerges from the interaction of a body with its environment. Unlike traditional AI which operates in abstract symbol spaces, embodied intelligence is grounded in physical reality.",
+      "page_number": 5
+    },
+    {
+      "id": "chunk_3",
+      "chapter_id": "ch2",
+      "section_name": "Humanoid Robotics",
+      "section_number": "2.1",
+      "content": "Humanoid robots are designed to resemble and mimic human form and behavior. Bipedal locomotion - walking on two legs like humans - is a key characteristic that distinguishes humanoid robots from other robot morphologies.",
+      "page_number": 15
+    },
+    {
+      "id": "chunk_4",
+      "chapter_id": "ch3",
+      "section_name": "ROS 2 Fundamentals",
+      "section_number": "3.1",
+      "content": "Robot Operating System (ROS) is a flexible framework for writing robot software. ROS 2 is the next generation of ROS, featuring improved performance, security, and real-time capabilities.",
+      "page_number": 28
+    },
+    {
+      "id": "chunk_5",
+      "chapter_id": "ch4",
+      "section_name": "Digital Twins",
+      "section_number": "4.1",
+      "content": "A digital twin is a virtual representation of a physical robot or system. Digital twins enable simulation and testing before deploying code to real hardware.",
+      "page_number": 42
+    },
+    {
+      "id": "chunk_6",
+      "chapter_id": "ch5",
+      "section_name": "Vision-Language-Action",
+      "section_number": "5.1",
+      "content": "Vision-Language-Action systems combine visual perception, language understanding, and motor control. These multimodal systems enable robots to understand instructions and execute complex tasks.",
+      "page_number": 58
+    },
+    {
+      "id": "chunk_7",
+      "chapter_id": "ch6",
+      "section_name": "Capstone Project",
+      "section_number": "6.1",
+      "content": "The capstone project is a comprehensive end-to-end robotics system that integrates all concepts learned in the course. Students build a complete perception-planning-control pipeline for a household task.",
+      "page_number": 75
+    }
+  ],
+  "hallucination_test_cases": [
+    {
+      "response": "According to recent research in machine learning...",
+      "should_flag": true,
+      "reason": "Contains external knowledge reference"
+    },
+    {
+      "response": "In my knowledge, robots are used in factories...",
+      "should_flag": true,
+      "reason": "Personal knowledge statement"
+    },
+    {
+      "response": "Chapter 1 explains that embodied intelligence is...",
+      "should_flag": false,
+      "reason": "Direct textbook reference"
+    }
+  ]
+}
