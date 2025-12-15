@@ -1,0 +1,19 @@
+{
+  "name": "Physical AI Robotics Textbook",
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "env": {
+    "REACT_APP_API_URL": "@api_url"
+  },
+  "rewrites": [
+    {
+      "source": "/api/rag/:path*",
+      "destination": "https://api.physical-ai-robotics.vercel.app/api/rag/:path*"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/:path*.html"
+    }
+  ]
+}
